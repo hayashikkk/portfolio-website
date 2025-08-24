@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - Projects</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- ナビゲーション -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h2>Portfolio</h2>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="projects.html" class="nav-link active">Projects</a>
+                <a href="contact.html" class="nav-link">Contact</a>
+            </div>
+            <div class="hamburger" id="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 幻想的なアニメーション背景 -->
+    <div class="fantasy-background">
+        <div class="aurora"></div>
+        <div class="stars"></div>
+        <div class="floating-lights"></div>
+        <div class="cosmic-dust"></div>
+    </div>
+
+    <!-- メインコンテンツ -->
+    <main class="main-content">
+        <div class="container">
+            <section class="projects-section">
+                <div class="section-header">
+                    <h1 class="section-title">My Projects</h1>
+                    <p class="section-subtitle">掲載しているプロジェクトは職業訓練校在学中に私個人で作成したプロジェクトです。</p>
+                </div>
+                
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <div class="project-image">
+                            <iframe 
+                                src="" 
+                                title="BloomShopSystem Demo"
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                        <div class="project-content">
+                            <h3>BloomShopSystem</h3>
+                            <p>花屋の業務管理システム。</p>
+                            <p>商品管理、在庫管理、注文処理機能、Excel出力機能を備えたWebアプリケーションです。</p>
+                            <p>AI駆動開発を取り入れ、システムを知人のご家族に実際に利用いただき、要望をもとに改善を繰り返しています。</p>
+                            <div class="project-tags">
+                                <span class="tag">Java</span>
+                                <span class="tag">Spring Boot</span>
+                                <span class="tag">MySQL</span>
+                                <span class="tag">HTML/CSS</span>
+                                <span class="tag">IntelliJ</span>
+                                <span class="tag">Claude code</span>
+                            </div>
+                            <div class="project-links">
+                                <a href="https://github.com/hayashikkk/BloomShopSystem" target="_blank" rel="noopener noreferrer" class="project-link">
+                                    <i class="fab fa-github"></i> GitHub
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <div class="project-image">
+                            <iframe 
+                            src="https://www.youtube.com/embed/OP3UY1R2W88" 
+                            title="RockPaperScissorsGame"
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                            </iframe>
+                        </div>
+                        <div class="project-content">
+                            <h3>ToDoApp</h3>
+                            <p>ToDoアプリ。</p>
+                            <p>MySQLを使用して、データを保存します。</p>
+                            <p>初めてMySQL、Spring Securityを使用したアプリです。</p>
+                            <p>製作期間：約3週間</p>
+                            <div class="project-tags">
+                                <span class="tag">Java</span>
+                                <span class="tag">Spring Boot</span>
+                                <span class="tag">MySQL</span>
+                                <span class="tag">HTML/CSS</span>
+                                <span class="tag">IntelliJ</span>
+                            </div>
+                            <div class="project-links">
+                                    <a href="https://github.com/hayashikkk/ToDoApp" target="_blank" rel="noopener noreferrer" class="project-link">
+                                    <i class="fab fa-github"></i> GitHub
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <div class="project-image">
+                            <iframe 
+                                src="https://www.youtube.com/embed/rxS9iIWN-ac" 
+                                title="RockPaperScissorsGame"
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                        <div class="project-content">
+                            <h3>じゃんけんゲーム</h3>
+                            <p>ブラウザで動作するじゃんけんゲーム。</p>
+                            <p>Javaの基礎を学び、アウトプットとして初めて作成しました。</p>
+                            <p>GET/POSTリクエスト、エラーハンドリングについて復習しました。</p>
+                            <p>製作期間：約2週間</p>
+                            <div class="project-tags">
+                                <span class="tag">Java</span>
+                                <span class="tag">Spring Boot</span>
+                                <span class="tag">HTML/CSS</span>
+                                <span class="tag">Eclipse</span>
+                            </div>
+                            <div class="project-links">
+                                <a href="https://github.com/hayashikkk/RockPaperScissorsGame" target="_blank" rel="noopener noreferrer" class="project-link">
+                                    <i class="fab fa-github"></i> GitHub
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <div class="project-image">
+                            <iframe 
+                                src="https://www.youtube.com/embed/WRzPdnLovQk" 
+                                title="つぶやきアプリ Demo"
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                        <div class="project-content">
+                            <h3>つぶやきアプリ</h3>
+                            <p>つぶやきアプリ。</p>
+                            <p>どこつぶアプリを改良したものです。</p>
+                            <p>MVCのアウトプット、ユーザー情報保持、投稿削除機能を実装しました。</p>
+                            <p>製作期間：約2週間</p>
+                            <div class="project-tags">
+                                <span class="tag">Java</span>
+                                <span class="tag">Jakarta EE</span>
+                                <span class="tag">HTML/CSS</span>
+                                <span class="tag">Eclipse</span>
+                            </div>
+                            <div class="project-links">
+                                <a href="https://github.com/hayashikkk/dokotsubuIMP" target="_blank" rel="noopener noreferrer" class="project-link">
+                                    <i class="fab fa-github"></i> GitHub
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
