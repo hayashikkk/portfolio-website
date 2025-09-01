@@ -315,7 +315,7 @@ function getDeviceConfig() {
     return {
         isMobile,
         isTouch,
-        threshold: isMobile ? 80 : 50, // モバイルの閾値を下げて反応しやすく
+        threshold: isMobile ? 40 : 50, // モバイルの閾値をさらに下げて反応しやすく
         particleCount: isMobile ? 4 : 8,
         particleDistance: isMobile ? 20 : 30,
         animationDelay: isMobile ? 150 : 200
@@ -379,7 +379,7 @@ function initScrollAnimations() {
         const deltaY = startY - currentY;
         
         // 最小移動距離のチェック（モバイルでは小さく）
-        const minDistance = config.isMobile ? 5 : 10;
+        const minDistance = config.isMobile ? 3 : 10;
         if (Math.abs(deltaY) < minDistance) return;
         
         isScrolling = true;
