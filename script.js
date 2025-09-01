@@ -33,8 +33,12 @@ function createFloatingLights() {
         'var(--cosmic-bronze)'
     ];
     
-    // 25個の光の玉を生成
-    for (let i = 0; i < 25; i++) {
+    // デバイスに応じた光の玉の数
+    const config = getDeviceConfig();
+    const lightCount = config.isMobile ? 15 : 25;
+    
+    // 光の玉を生成
+    for (let i = 0; i < lightCount; i++) {
         const light = document.createElement('div');
         light.className = 'floating-light';
         
@@ -78,8 +82,12 @@ function createConstellations() {
         opacity: 0.3;
     `;
     
+    // デバイスに応じた星座線の数
+    const config = getDeviceConfig();
+    const lineCount = config.isMobile ? 4 : 8;
+    
     // ランダムな星座線を描画
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < lineCount; i++) {
         const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
         const x1 = Math.random() * 100;
         const y1 = Math.random() * 100;
@@ -121,7 +129,10 @@ function createMouseFollower() {
     
     // マウストレイル効果
     function createMouseTrail(x, y) {
-        if (Math.random() > 0.8) { // 20%の確率で光を生成
+        const config = getDeviceConfig();
+        const probability = config.isMobile ? 0.9 : 0.8; // モバイルでは生成頻度を下げる
+        
+        if (Math.random() > probability) { // 確率で光を生成
             const trail = document.createElement('div');
             trail.style.cssText = `
                 position: fixed;
@@ -199,9 +210,12 @@ function createClickEffect() {
         const y = e.clientY;
         
         // クリック時に爆発エフェクト
-        for (let i = 0; i < 12; i++) {
+        const config = getDeviceConfig();
+        const particleCount = config.isMobile ? 6 : 12; // モバイルでは半分に
+        
+        for (let i = 0; i < particleCount; i++) {
             const particle = document.createElement('div');
-            const angle = (i / 12) * Math.PI * 2;
+            const angle = (i / particleCount) * Math.PI * 2;
             const distance = Math.random() * 100 + 50;
             const endX = x + Math.cos(angle) * distance;
             const endY = y + Math.sin(angle) * distance;
@@ -278,58 +292,110 @@ function enhanceTitleInteraction() {
     
 }
 
-// マウスホイールでボタンを表示・非表示するアニメーション
-function initWheelAnimations() {
-    let isVisible = false;
-    let wheelDelta = 0;
-    let lastDirection = null;
-    const THRESHOLD = 50;
+// デバイス判定関数
+function isTouchDevice() {
+    return ('ontouchstart' in window) || 
+           (navigator.maxTouchPoints > 0) || 
+           (navigator.msMaxTouchPoints > 0);
+}
+
+// デバイスに応じた設定を取得
+function getDeviceConfig() {
+    const isMobile = window.innerWidth <= 768;
+    const isTouch = isTouchDevice();
     
-    function handleWheel(e) {
-        // ページスクロールを防止
-        e.preventDefault();
-        
-        // ホイール方向を判定
-        const wheelDirection = e.deltaY > 0 ? 'down' : 'up';
-        
+    return {
+        isMobile,
+        isTouch,
+        threshold: isMobile ? 100 : 50,
+        particleCount: isMobile ? 4 : 8,
+        particleDistance: isMobile ? 20 : 30,
+        animationDelay: isMobile ? 150 : 200
+    };
+}
+
+// 統合スクロールアニメーション
+function initScrollAnimations() {
+    let isVisible = false;
+    let scrollDelta = 0;
+    let lastDirection = null;
+    let startY = 0;
+    let isScrolling = false;
+    
+    const config = getDeviceConfig();
+    
+    // 共通のスクロール処理
+    function handleScrollDirection(direction, delta) {
         // 方向が変わったらリセット
-        if (lastDirection !== wheelDirection) {
-            wheelDelta = 0;
-            lastDirection = wheelDirection;
+        if (lastDirection !== direction) {
+            scrollDelta = 0;
+            lastDirection = direction;
         }
         
-        // 累積値を増やす（方向に関係なく）
-        wheelDelta += Math.abs(e.deltaY);
+        // 累積値を増やす
+        scrollDelta += Math.abs(delta);
         
-        if (wheelDirection === 'down' && wheelDelta >= THRESHOLD && !isVisible) {
+        if (direction === 'down' && scrollDelta >= config.threshold && !isVisible) {
             // 下スクロール: 閾値到達で表示
             isVisible = true;
-            wheelDelta = 0; // リセット
+            scrollDelta = 0;
             showButtons();
-        } else if (wheelDirection === 'up' && wheelDelta >= THRESHOLD && isVisible) {
+        } else if (direction === 'up' && scrollDelta >= config.threshold && isVisible) {
             // 上スクロール: 閾値到達で非表示
             isVisible = false;
-            wheelDelta = 0; // リセット
+            scrollDelta = 0;
             hideButtons();
         }
     }
     
+    // ホイールイベント処理
+    function handleWheel(e) {
+        e.preventDefault();
+        const wheelDirection = e.deltaY > 0 ? 'down' : 'up';
+        handleScrollDirection(wheelDirection, e.deltaY);
+    }
+    
+    // タッチイベント処理
+    function handleTouchStart(e) {
+        startY = e.touches[0].clientY;
+        isScrolling = false;
+    }
+    
+    function handleTouchMove(e) {
+        if (!startY || isScrolling) return;
+        
+        const currentY = e.touches[0].clientY;
+        const deltaY = startY - currentY;
+        
+        // 最小移動距離のチェック
+        if (Math.abs(deltaY) < 10) return;
+        
+        isScrolling = true;
+        const touchDirection = deltaY > 0 ? 'down' : 'up';
+        handleScrollDirection(touchDirection, deltaY);
+    }
+    
+    function handleTouchEnd() {
+        startY = 0;
+        isScrolling = false;
+    }
+    
     function showButtons() {
-        // 順番にボタンをアニメーション表示
+        // デバイスに応じた遅延でボタンをアニメーション表示
         setTimeout(() => {
             const aboutBtn = document.querySelector('.nav-btn-about');
             aboutBtn?.classList.add('scroll-animate');
-        }, 200);
+        }, config.animationDelay);
         
         setTimeout(() => {
             const projectsBtn = document.querySelector('.nav-btn-projects');
             projectsBtn?.classList.add('scroll-animate');
-        }, 400);
+        }, config.animationDelay * 2);
         
         setTimeout(() => {
             const contactBtn = document.querySelector('.nav-btn-contact');
             contactBtn?.classList.add('scroll-animate');
-        }, 600);
+        }, config.animationDelay * 3);
     }
     
     function hideButtons() {
@@ -339,8 +405,16 @@ function initWheelAnimations() {
         document.querySelector('.nav-btn-contact')?.classList.remove('scroll-animate');
     }
     
-    // ホイールイベント追加（ホームページのみ）
+    // イベントリスナーの追加（ホームページのみ）
     if (document.querySelector('.nav-buttons')) {
+        if (config.isTouch) {
+            // タッチデバイスの場合
+            document.addEventListener('touchstart', handleTouchStart, { passive: true });
+            document.addEventListener('touchmove', handleTouchMove, { passive: true });
+            document.addEventListener('touchend', handleTouchEnd, { passive: true });
+        }
+        
+        // ホイールイベントは両方で使用（デスクトップとタッチパッド）
         window.addEventListener('wheel', handleWheel, { passive: false });
     }
 }
@@ -371,16 +445,22 @@ function enhanceNavigationButtons() {
     });
 }
 
-// ボタン周辺にパーティクル効果を生成
+// レスポンシブ対応のボタンパーティクル効果を生成
 function createButtonParticles(button) {
     const rect = button.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
+    const config = getDeviceConfig();
     
-    for (let i = 0; i < 8; i++) {
+    // デバイスに応じたパーティクル設定
+    const particleCount = config.particleCount;
+    const distance = config.particleDistance;
+    const particleSize = config.isMobile ? 2 : 3;
+    const duration = config.isMobile ? 600 : 800;
+    
+    for (let i = 0; i < particleCount; i++) {
         const particle = document.createElement('div');
-        const angle = (i / 8) * Math.PI * 2;
-        const distance = 30;
+        const angle = (i / particleCount) * Math.PI * 2;
         const endX = centerX + Math.cos(angle) * distance;
         const endY = centerY + Math.sin(angle) * distance;
         
@@ -388,13 +468,13 @@ function createButtonParticles(button) {
             position: fixed;
             left: ${centerX}px;
             top: ${centerY}px;
-            width: 3px;
-            height: 3px;
+            width: ${particleSize}px;
+            height: ${particleSize}px;
             background: var(--primary-color);
             border-radius: 50%;
             pointer-events: none;
             z-index: 999;
-            box-shadow: 0 0 6px var(--primary-color);
+            box-shadow: 0 0 ${particleSize * 2}px var(--primary-color);
             opacity: 0.8;
             transform: translate(-50%, -50%);
         `;
@@ -406,11 +486,11 @@ function createButtonParticles(button) {
                 opacity: 0.8
             },
             { 
-                transform: `translate(${endX - centerX - 1.5}px, ${endY - centerY - 1.5}px) scale(0)`,
+                transform: `translate(${endX - centerX - particleSize/2}px, ${endY - centerY - particleSize/2}px) scale(0)`,
                 opacity: 0
             }
         ], {
-            duration: 800,
+            duration: duration,
             easing: 'ease-out'
         });
         
@@ -418,7 +498,7 @@ function createButtonParticles(button) {
         
         setTimeout(() => {
             particle.remove();
-        }, 800);
+        }, duration);
     }
 }
 
@@ -427,11 +507,19 @@ function initializeEffects() {
     // 幻想的エフェクトが存在する場合のみ実行
     const fantasyBg = document.querySelector('.fantasy-background');
     if (fantasyBg) {
+        const config = getDeviceConfig();
+        
+        // 基本エフェクトは常に実行
         createFloatingLights();
         createConstellations();
-        createMouseFollower();
-        createBackgroundPulse();
-        createShootingStars();
+        
+        // モバイルでは一部エフェクトを制限してパフォーマンス向上
+        if (!config.isMobile) {
+            createMouseFollower();
+            createBackgroundPulse();
+            createShootingStars();
+        }
+        
         createClickEffect();
         
         // ホームページのタイトルエフェクト
@@ -445,8 +533,8 @@ function initializeEffects() {
         // ナビゲーションボタンのエフェクト
         enhanceNavigationButtons();
         
-        // ホイールアニメーション初期化
-        initWheelAnimations();
+        // スクロールアニメーション初期化（タッチ・ホイール統合）
+        initScrollAnimations();
     }
 }
 
