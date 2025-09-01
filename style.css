@@ -986,12 +986,16 @@ body:has(.contact-section) .main-content {
     color: var(--text-secondary);
     margin: 0;
     font-size: 1rem;
+    word-break: break-all; /* 長いテキストを改行 */
+    overflow-wrap: break-word; /* 単語の途中でも改行 */
 }
 
 .contact-details a {
     color: var(--primary-color);
     text-decoration: none;
     transition: var(--transition);
+    word-break: break-all; /* 長いメールアドレスを改行 */
+    overflow-wrap: break-word; /* 単語の途中でも改行 */
 }
 
 .contact-details a:hover {
@@ -1137,6 +1141,13 @@ body:has(.contact-section) .main-content {
         max-width: 100%; /* 最大幅を設定 */
         width: 100%;
         box-sizing: border-box; /* ボックスサイジングを明示 */
+    }
+    
+    /* メールアドレスのモバイル対応 */
+    .contact-details p,
+    .contact-details a {
+        font-size: 0.9rem; /* モバイルでフォントサイズを縮小 */
+        line-height: 1.4; /* 行間を調整 */
     }
     
     /* about.html のモバイル対応 */
