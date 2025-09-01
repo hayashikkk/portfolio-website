@@ -364,6 +364,9 @@ function initScrollAnimations() {
     function handleTouchMove(e) {
         if (!startY || isScrolling) return;
         
+        // プルツーリフレッシュを防ぐ
+        e.preventDefault();
+        
         const currentY = e.touches[0].clientY;
         const deltaY = startY - currentY;
         
@@ -410,7 +413,7 @@ function initScrollAnimations() {
         if (config.isTouch) {
             // タッチデバイスの場合
             document.addEventListener('touchstart', handleTouchStart, { passive: true });
-            document.addEventListener('touchmove', handleTouchMove, { passive: true });
+            document.addEventListener('touchmove', handleTouchMove, { passive: false }); // preventDefaultを使うため
             document.addEventListener('touchend', handleTouchEnd, { passive: true });
         }
         

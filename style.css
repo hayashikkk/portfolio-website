@@ -42,6 +42,7 @@ body {
     position: relative;
     overflow-y: auto;
     min-height: 100vh;
+    overscroll-behavior: none; /* プルツーリフレッシュを無効化 */
 }
 
 /* ホームページ専用スタイル - より確実な指定 */
