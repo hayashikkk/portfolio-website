@@ -640,6 +640,29 @@ body:has(.projects-section) .main-content {
     position: static !important;
 }
 
+/* About ページでも通常のスクロール可能なレイアウトに変更 */
+body:has(.about-section) .main-content {
+    height: auto !important;
+    overflow: visible !important;
+    display: block !important;
+    padding-top: 100px;
+    padding-bottom: 2rem;
+    align-items: unset !important;
+    position: static !important;
+}
+
+/* Contact ページでも通常のスクロール可能なレイアウトに変更 */
+body:has(.contact-section) .main-content {
+    height: auto !important;
+    overflow: visible !important;
+    display: block !important;
+    padding-top: 100px;
+    padding-bottom: 2rem;
+    align-items: unset !important;
+    position: static !important;
+}
+
+
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -1124,4 +1147,5 @@ body:has(.projects-section) .main-content {
     .main-content {
         padding-bottom: 2rem; /* 全体の下部パディング */
     }
+    
 }
