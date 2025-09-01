@@ -561,7 +561,8 @@ function initializeEffects() {
 }
 
 // ページ初期化
-document.addEventListener('DOMContentLoaded', () => {
+// ローディング効果とページ初期化
+function initializePage() {
     // ナビゲーション初期化（全ページ共通）
     initializeNavigation();
     
@@ -577,6 +578,46 @@ document.addEventListener('DOMContentLoaded', () => {
         initializeEffects();
         enhanceNavigation();
     }, 500);
+}
+
+document.addEventListener('DOMContentLoaded', initializePage);
+
+// ブラウザの戻る/進むボタン対応（bfcache対策）
+window.addEventListener('pageshow', (event) => {
+    // bfcache から復元された場合の処理
+    if (event.persisted) {
+        // 不透明度をリセット
+        document.body.style.opacity = '1';
+        document.body.style.transition = 'opacity 1s ease';
+        
+        // CSSとJSの再読み込み確認
+        const cssLoaded = document.querySelector('link[href*="style.css"]');
+        const jsLoaded = document.querySelector('script[src*="script.js"]');
+        
+        if (!cssLoaded) {
+            // CSSが見つからない場合は再読み込み
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = 'style.css?v=' + Date.now();
+            document.head.appendChild(link);
+        }
+        
+        // エフェクトを再初期化
+        setTimeout(() => {
+            initializeEffects();
+            enhanceNavigation();
+        }, 100);
+    }
+});
+
+// ページ読み込み完了時の追加チェック
+window.addEventListener('load', () => {
+    // スタイルが適用されているか確認
+    const computedStyle = window.getComputedStyle(document.body);
+    if (computedStyle.backgroundColor === 'rgba(0, 0, 0, 0)' || computedStyle.backgroundColor === 'transparent') {
+        // 背景色が設定されていない場合は強制的に設定
+        document.body.style.background = 'var(--bg-primary)';
+    }
 });
 
 // CSSアニメーションを動的に追加
