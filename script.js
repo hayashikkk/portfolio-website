@@ -262,12 +262,20 @@ function enhanceNavigation() {
 function createFloatUpEffect() {
     const mainTitle = document.getElementById('mainTitle');
     const subTitle = document.getElementById('subTitle');
+    const scrollHint = document.getElementById('scrollHint');
     
     // 1秒後に浮き上がり開始
     setTimeout(() => {
         mainTitle.classList.add('animate');
         subTitle.classList.add('animate');
     }, 1000);
+    
+    // 3秒後にスクロールヒント表示
+    setTimeout(() => {
+        if (scrollHint) {
+            scrollHint.classList.add('show');
+        }
+    }, 3000);
 }
 
 // タイトルのインタラクティブ効果
@@ -307,7 +315,7 @@ function getDeviceConfig() {
     return {
         isMobile,
         isTouch,
-        threshold: isMobile ? 100 : 50,
+        threshold: isMobile ? 80 : 50, // モバイルの閾値を下げて反応しやすく
         particleCount: isMobile ? 4 : 8,
         particleDistance: isMobile ? 20 : 30,
         animationDelay: isMobile ? 150 : 200
@@ -370,8 +378,9 @@ function initScrollAnimations() {
         const currentY = e.touches[0].clientY;
         const deltaY = startY - currentY;
         
-        // 最小移動距離のチェック
-        if (Math.abs(deltaY) < 10) return;
+        // 最小移動距離のチェック（モバイルでは小さく）
+        const minDistance = config.isMobile ? 5 : 10;
+        if (Math.abs(deltaY) < minDistance) return;
         
         isScrolling = true;
         const touchDirection = deltaY > 0 ? 'down' : 'up';
@@ -384,6 +393,12 @@ function initScrollAnimations() {
     }
     
     function showButtons() {
+        // スクロールヒントを隠す
+        const scrollHint = document.getElementById('scrollHint');
+        if (scrollHint) {
+            scrollHint.classList.remove('show');
+        }
+        
         // デバイスに応じた遅延でボタンをアニメーション表示
         setTimeout(() => {
             const aboutBtn = document.querySelector('.nav-btn-about');
@@ -402,6 +417,12 @@ function initScrollAnimations() {
     }
     
     function hideButtons() {
+        // スクロールヒントを再表示
+        const scrollHint = document.getElementById('scrollHint');
+        if (scrollHint) {
+            scrollHint.classList.add('show');
+        }
+        
         // 全ボタンを即座に非表示
         document.querySelector('.nav-btn-about')?.classList.remove('scroll-animate');
         document.querySelector('.nav-btn-projects')?.classList.remove('scroll-animate');
@@ -410,14 +431,12 @@ function initScrollAnimations() {
     
     // イベントリスナーの追加（ホームページのみ）
     if (document.querySelector('.nav-buttons')) {
-        if (config.isTouch) {
-            // タッチデバイスの場合
-            document.addEventListener('touchstart', handleTouchStart, { passive: true });
-            document.addEventListener('touchmove', handleTouchMove, { passive: false }); // preventDefaultを使うため
-            document.addEventListener('touchend', handleTouchEnd, { passive: true });
-        }
+        // タッチイベントは常に追加（スマートフォン・タブレット対応）
+        document.addEventListener('touchstart', handleTouchStart, { passive: true });
+        document.addEventListener('touchmove', handleTouchMove, { passive: false }); // preventDefaultを使うため
+        document.addEventListener('touchend', handleTouchEnd, { passive: true });
         
-        // ホイールイベントは両方で使用（デスクトップとタッチパッド）
+        // ホイールイベントも常に追加（デスクトップ・タッチパッド対応）
         window.addEventListener('wheel', handleWheel, { passive: false });
     }
 }

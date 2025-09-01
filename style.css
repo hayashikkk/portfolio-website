@@ -484,6 +484,27 @@ body:has(.projects-section) {
     width: 100%;
 }
 
+/* スクロールヒント */
+.scroll-hint {
+    position: absolute;
+    top: 140%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    opacity: 0;
+    transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    text-transform: lowercase;
+    font-style: italic;
+}
+
+.scroll-hint.show {
+    opacity: 0.4;
+    transform: translateX(-50%) translateY(0);
+}
+
 .title-glow {
     position: absolute;
     top: 50%;
@@ -585,6 +606,11 @@ body:has(.projects-section) {
         width: 300px;
         height: 150px;
     }
+    
+    .scroll-hint {
+        font-size: 0.8rem;
+        top: 130%;
+    }
 }
 
 /* ページコンテンツのスタイル */
@@ -676,6 +702,7 @@ body:has(.projects-section) .main-content {
     flex-direction: column;
     gap: 1rem;
     margin-top: 3rem;
+    margin-bottom: 3rem; /* 下部マージンを追加 */
 }
 
 .about-card {
@@ -709,6 +736,7 @@ body:has(.projects-section) .main-content {
     flex: 1;
     min-height: 0;
     margin-top: 1rem;
+    margin-bottom: 2rem; /* 下部マージンを追加 */
 }
 
 .skill-category {
@@ -870,6 +898,7 @@ body:has(.projects-section) .main-content {
     justify-content: center;
     max-width: 800px;
     margin: 0 auto;
+    padding: 0 1rem; /* 左右のパディングを追加 */
 }
 
 .contact-card {
@@ -1073,6 +1102,26 @@ body:has(.projects-section) .main-content {
     .about-card,
     .contact-card,
     .contact-form {
-        padding: 2rem;
+        padding: 1.5rem; /* モバイルでパディングを調整 */
+    }
+    
+    /* contact.html のモバイル対応 */
+    .contact-content-simple {
+        padding: 0 0.5rem; /* モバイル用のパディング調整 */
+    }
+    
+    .contact-card {
+        max-width: 100%; /* 最大幅を設定 */
+        width: 100%;
+        box-sizing: border-box; /* ボックスサイジングを明示 */
+    }
+    
+    /* about.html のモバイル対応 */
+    .about-content {
+        padding-bottom: 2rem; /* 下部パディングを追加 */
+    }
+    
+    .main-content {
+        padding-bottom: 2rem; /* 全体の下部パディング */
     }
 }
