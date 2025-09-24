@@ -725,7 +725,7 @@ body:has(.contact-section) .main-content {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    margin-top: 3rem;
+    margin-top: rem;
     margin-bottom: 3rem; /* 下部マージンを追加 */
 }
 
