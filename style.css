@@ -42,12 +42,13 @@ body {
     position: relative;
     overflow-y: auto;
     min-height: 100vh;
-    overscroll-behavior: none; /* プルツーリフレッシュを無効化 */
+    overscroll-behavior-x: none; /* 横スクロールのみ無効化 */
+    -webkit-overflow-scrolling: touch; /* iOSのスムーズスクロール */
 }
 
 /* ホームページ専用スタイル - より確実な指定 */
 body:has(.nav-buttons) {
-    overflow-y: hidden;
+    overflow-y: auto; /* スクロールを許可してタッチ検出 */
     height: 100vh;
 }
 

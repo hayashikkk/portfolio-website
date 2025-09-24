@@ -315,7 +315,7 @@ function getDeviceConfig() {
     return {
         isMobile,
         isTouch,
-        threshold: isMobile ? 40 : 50, // モバイルの閾値をさらに下げて反応しやすく
+        threshold: isMobile ? 20 : 50, // モバイルの閾値をさらに下げて反応しやすく
         particleCount: isMobile ? 4 : 8,
         particleDistance: isMobile ? 20 : 30,
         animationDelay: isMobile ? 150 : 200
@@ -371,17 +371,14 @@ function initScrollAnimations() {
     
     function handleTouchMove(e) {
         if (!startY || isScrolling) return;
-        
-        // プルツーリフレッシュを防ぐ
-        e.preventDefault();
-        
+
         const currentY = e.touches[0].clientY;
         const deltaY = startY - currentY;
-        
+
         // 最小移動距離のチェック（モバイルでは小さく）
-        const minDistance = config.isMobile ? 3 : 10;
+        const minDistance = config.isMobile ? 5 : 10;
         if (Math.abs(deltaY) < minDistance) return;
-        
+
         isScrolling = true;
         const touchDirection = deltaY > 0 ? 'down' : 'up';
         handleScrollDirection(touchDirection, deltaY);
@@ -433,7 +430,7 @@ function initScrollAnimations() {
     if (document.querySelector('.nav-buttons')) {
         // タッチイベントは常に追加（スマートフォン・タブレット対応）
         document.addEventListener('touchstart', handleTouchStart, { passive: true });
-        document.addEventListener('touchmove', handleTouchMove, { passive: false }); // preventDefaultを使うため
+        document.addEventListener('touchmove', handleTouchMove, { passive: true });
         document.addEventListener('touchend', handleTouchEnd, { passive: true });
         
         // ホイールイベントも常に追加（デスクトップ・タッチパッド対応）
